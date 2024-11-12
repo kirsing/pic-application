@@ -7,6 +7,13 @@ spring:
         locator:
           enabled: true
           lower-case-service-id: true
+      routes[0]:
+        id: users-status-check
+        uri: lb://users-ws
+        predicates[0]: Path=/api/users/status/check
+        predicates[1]: Method=GET
+        filters[0]: RemoveRequestHeader=Cookie
+        filters[1]: RewritePath=/users-ws/(?<segment>.*), /$\{segment}
 
 server:
   port: 8082
